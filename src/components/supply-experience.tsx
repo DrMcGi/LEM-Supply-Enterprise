@@ -7,27 +7,60 @@ import type { MouseEvent, ReactNode } from "react";
 const supplyCategories = [
   {
     title: "Maintenance & Engineering Consumables",
-    summary: "Operational materials and engineering essentials that help teams maintain reliability on site.",
+    items: [
+      "Engine oil (e.g. Mobil Delvac)",
+      "Grease (SKF grease)",
+      "Hydraulic oil",
+      "Welding rods",
+      "Drill bits",
+      "Fasteners (nuts, bolts, washers)",
+      "Cutting/grinding discs",
+    ],
     accent: "from-amber-100 via-white to-orange-50",
   },
   {
     title: "Electrical Consumables",
-    summary: "Electrical support items for day-to-day installations, servicing, and infrastructure continuity.",
+    items: [
+      "Insulation tapes (various colours)",
+      "Cable lugs",
+      "Electrical connectors",
+      "Fuses",
+      "Light bulbs",
+      "Batteries",
+    ],
     accent: "from-teal-100 via-white to-cyan-50",
   },
   {
     title: "General Supplies",
-    summary: "Practical business and workplace supply support for consistent everyday operations.",
+    items: [
+      "Paper towels / tissue roll",
+      "Hand cleaner (liquid soap)",
+      "Disposable nitrile gloves",
+      "Office stationery",
+      "Coffee mug (branded)",
+      "Drinking water bottle",
+    ],
     accent: "from-stone-100 via-white to-amber-50",
   },
   {
     title: "Processing Plant Consumables",
-    summary: "Supply support tailored for plant environments where continuity, safety, and response time matter.",
+    items: [
+      "Flocculant (e.g. SNF Floerger)",
+      "Lime (hydrated/quicklime)",
+      "Cyanide solution",
+      "Grinding media (steel balls)",
+    ],
     accent: "from-sky-100 via-white to-teal-50",
   },
   {
     title: "Health, Safety & PPE Consumables",
-    summary: "Essential protective products that support compliance, preparedness, and workforce safety.",
+    items: [
+      "Hard hat (safety helmet)",
+      "Safety glasses / goggles",
+      "Dust mask / respirator",
+      "Protective gloves",
+      "Ear protection (if implied in set)",
+    ],
     accent: "from-emerald-100 via-white to-lime-50",
   },
 ] as const;
@@ -55,7 +88,8 @@ type SupplyExperienceProps = {
   logoPath: string | null;
   productImagePath: string | null;
   investmentDocumentPath: string | null;
-  productSpecificationPath: string | null;
+  galleryImages: string[];
+  galleryHref: string | null;
 };
 
 type MagneticAnchorProps = {
@@ -175,38 +209,46 @@ function ContactChip({ href, icon, value }: { href?: string; icon: ReactNode; va
   return <div className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/6 px-3 py-2 text-sm font-semibold text-stone-100">{content}</div>;
 }
 
-function DocumentCard({
-  title,
-  description,
-  href,
-}: {
-  title: string;
-  description: string;
-  href: string | null;
-}) {
+function GalleryCard({ galleryImages, galleryHref }: { galleryImages: string[]; galleryHref: string | null }) {
+  const placeholders = ["Image 01", "Image 02", "Image 03", "Image 04"] as const;
+
   return (
     <motion.article variants={revealUp} className="document-card p-6">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-700">Reference document</div>
-      <h3 className="mt-4 text-2xl font-bold text-stone-900">{title}</h3>
-      <p className="mt-3 text-base leading-relaxed text-stone-700">{description}</p>
-      {href ? (
+      <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-700">LEM Chilli</div>
+      <h3 className="mt-4 text-2xl font-bold text-stone-900">Product Gallery</h3>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {placeholders.map((placeholder, index) => (
+          <div key={placeholder} className="relative h-24 overflow-hidden rounded-3xl border border-dashed border-teal-200 bg-linear-to-br from-white via-teal-50/60 to-amber-50/60 sm:h-28">
+            {galleryImages[index] ? (
+              <Image
+                src={galleryImages[index]}
+                alt={`LEM Chilli gallery image ${index + 1}`}
+                fill
+                sizes="(min-width: 640px) 180px, 100vw"
+                className="object-contain p-2"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-[10px] font-semibold uppercase tracking-[0.24em] text-teal-700">
+                {placeholder}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      {galleryHref ? (
         <div className="mt-6">
-          <MagneticAnchor href={href} label="Open document" target="_blank" rel="noreferrer" />
+          <MagneticAnchor href={galleryHref} label="View Full Gallery" target="_blank" rel="noreferrer" />
         </div>
-      ) : (
-        <div className="mt-6 rounded-2xl border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">
-          Add this file to <span className="font-bold">public/documents</span> to enable direct access.
-        </div>
-      )}
+      ) : null}
     </motion.article>
   );
 }
 
-export function SupplyExperience({ logoPath, productImagePath, investmentDocumentPath, productSpecificationPath }: SupplyExperienceProps) {
+export function SupplyExperience({ logoPath, productImagePath, investmentDocumentPath, galleryImages, galleryHref }: SupplyExperienceProps) {
   return (
     <main className="relative overflow-hidden pb-10">
-      <div className="pointer-events-none absolute left-[-8rem] top-10 h-72 w-72 rounded-full bg-teal-200/40 blur-3xl" aria-hidden />
-      <div className="pointer-events-none absolute right-[-6rem] top-20 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-teal-200/40 blur-3xl" aria-hidden />
+      <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" aria-hidden />
 
       <section className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <motion.section
@@ -220,7 +262,7 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
             <div>
               <motion.div variants={revealUp} className="inline-flex items-center gap-3 rounded-full border border-teal-200 bg-white/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-800">
                 <span className="signal-dot" />
-                <span>LEM supply division</span>
+                <span>LEM Supply Enterprise</span>
               </motion.div>
               <motion.h1 variants={revealUp} className="mt-6 max-w-4xl text-balance text-5xl font-black leading-[0.94] text-stone-900 sm:text-6xl lg:text-7xl">
                 Operational supply support built for real business continuity.
@@ -230,12 +272,12 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
               </motion.p>
               <motion.div variants={revealUp} className="mt-8 flex flex-wrap items-center gap-3">
                 <MagneticAnchor href="#categories" label="Explore Categories" />
-                <MagneticAnchor href="#documents" label="View Documents" variant="secondary" />
+                <MagneticAnchor href="#community" label="Community Empowerment" variant="secondary" />
               </motion.div>
             </div>
 
             <motion.div variants={revealUp} className="grid gap-4">
-              <div className="rounded-[2rem] border border-white/70 bg-linear-to-br from-white via-amber-50/80 to-teal-50/80 p-5 shadow-[0_30px_70px_-48px_rgba(0,0,0,0.28)]">
+              <div className="rounded-4xl border border-white/70 bg-linear-to-br from-white via-amber-50/80 to-teal-50/80 p-5 shadow-[0_30px_70px_-48px_rgba(0,0,0,0.28)]">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-700">Supply identity</div>
@@ -291,8 +333,8 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
           </motion.div>
 
           {productImagePath ? (
-            <motion.div variants={revealUp} className="mt-8 overflow-hidden rounded-[2rem] border border-white/75 bg-white/80 p-3 shadow-[0_30px_90px_-50px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-4">
-              <div className="overflow-hidden rounded-[1.5rem] border border-amber-100/80 bg-linear-to-br from-white via-amber-50/60 to-white">
+            <motion.div variants={revealUp} className="mt-8 overflow-hidden rounded-4xl border border-white/75 bg-white/80 p-3 shadow-[0_30px_90px_-50px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-4">
+              <div className="overflow-hidden rounded-3xl border border-amber-100/80 bg-linear-to-br from-white via-amber-50/60 to-white">
                 <Image
                   src={productImagePath}
                   alt="LEM Supply Enterprise product categories board"
@@ -310,7 +352,14 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
               <motion.article key={category.title} variants={revealUp} className={`category-card bg-linear-to-br ${category.accent} p-5`}>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-teal-700">Category</div>
                 <h3 className="mt-3 text-2xl font-bold leading-tight text-stone-900">{category.title}</h3>
-                <p className="mt-4 text-sm leading-relaxed text-stone-700">{category.summary}</p>
+                <ul className="mt-4 space-y-2 text-sm leading-relaxed text-stone-700">
+                  {category.items.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </motion.article>
             ))}
           </div>
@@ -344,7 +393,7 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
         </motion.section>
 
         <motion.section
-          id="documents"
+          id="community"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
@@ -352,24 +401,14 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
           className="mt-10"
         >
           <motion.div variants={revealUp} className="text-center">
-            <p className="text-xs uppercase tracking-[0.22em] text-teal-700">Working documents</p>
-            <h2 className="mt-4 text-4xl font-bold text-stone-900 sm:text-5xl">Reference files can plug straight into the site.</h2>
-            <p className="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-stone-700">
-              I used the attached document titles as part of the site structure, and these cards will automatically become live download points once the files are added to this repo.
+            <p className="text-xs uppercase tracking-[0.22em] text-teal-700">Community Empowerment</p>
+            <p className="mx-auto mt-4 max-w-5xl text-lg leading-relaxed text-stone-700">
+              Investment Statement: LEM Chilli Product LEM Supply Enterprise’s investment in the LEM Chilli product is rooted in our strong commitment to building sustainable supply chains and supporting local SMMEs. As a business, we recognize that true economic growth is driven by empowering local producers and creating opportunities within our communities. When a local black-owned farmer approached us with high-quality chilli produce, we saw an opportunity not only to support his agricultural efforts but also to create a value-added product that strengthens our supply chain. By integrating locally sourced raw materials into a market-ready product, we ensure both sustainability and shared economic benefit. This initiative reflects our broader vision of promoting inclusive growth, fostering entrepreneurship, and contributing meaningfully to the development of black-owned enterprises. Through the LEM Chilli product, we are not just supplying goods—we are investing in people, partnerships, and long-term impact.
             </p>
           </motion.div>
 
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            <DocumentCard
-              title="Investment Statement"
-              description="A dedicated slot for the investment statement currently referenced as Investment Statement_LEM Chilli.docx."
-              href={investmentDocumentPath}
-            />
-            <DocumentCard
-              title="Product Specification"
-              description="A dedicated slot for the product specification currently referenced as Product Specification.docx."
-              href={productSpecificationPath}
-            />
+          <div className="mt-8 grid gap-5 lg:grid-cols-1">
+            <GalleryCard galleryImages={galleryImages} galleryHref={galleryHref} />
           </div>
         </motion.section>
 
