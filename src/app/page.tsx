@@ -16,7 +16,6 @@ export default function HomePage() {
     ? readdirSync(imagesDirectory)
         .filter((fileName) => /\.(png|jpe?g|webp)$/i.test(fileName) && fileName !== "Products_Image.png")
         .sort((left, right) => left.localeCompare(right))
-        .slice(0, 4)
         .map((fileName) => `/images/${fileName}`)
     : [];
   const galleryHref = galleryImages[0] ?? productImagePath;

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { MouseEvent, ReactNode } from "react";
 
 const supplyCategories = [
@@ -209,42 +210,66 @@ function ContactChip({ href, icon, value }: { href?: string; icon: ReactNode; va
   return <div className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/6 px-3 py-2 text-sm font-semibold text-stone-100">{content}</div>;
 }
 
-function GalleryCard({ galleryImages, galleryHref }: { galleryImages: string[]; galleryHref: string | null }) {
-  const placeholders = ["Image 01", "Image 02", "Image 03", "Image 04"] as const;
+function GalleryCard({ galleryImages, productImagePath, galleryHref }: { galleryImages: string[]; productImagePath: string | null; galleryHref: string | null }) {
+  const slideImages = galleryImages.length ? galleryImages : productImagePath ? [productImagePath] : [];
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    if (slideImages.length <= 1) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slideImages.length);
+    }, 3200);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [slideImages]);
 
   return (
-    <motion.article variants={revealUp} className="document-card p-6">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-700">LEM Chilli</div>
-      <h3 className="mt-4 text-2xl font-bold text-stone-900">Product Gallery</h3>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        {placeholders.map((placeholder, index) => (
-          <div key={placeholder} className="relative h-24 overflow-hidden rounded-3xl border border-dashed border-teal-200 bg-linear-to-br from-white via-teal-50/60 to-amber-50/60 sm:h-28">
-            {galleryImages[index] ? (
+    <motion.article variants={revealUp} className="document-card relative min-h-72 overflow-hidden p-0 sm:min-h-80 lg:min-h-96">
+      <div className="absolute inset-0 bg-linear-to-br from-stone-950 via-stone-900 to-teal-950" />
+
+      {slideImages.length ? (
+        <div className="absolute inset-0">
+          {slideImages.map((imagePath, index) => (
+            <div key={imagePath} className={`absolute inset-0 transition-opacity duration-700 ${index === activeSlide ? "opacity-100" : "opacity-0"}`}>
               <Image
-                src={galleryImages[index]}
-                alt={`LEM Chilli gallery image ${index + 1}`}
+                src={imagePath}
+                alt={`LEM Chilli gallery highlight ${index + 1}`}
                 fill
-                sizes="(min-width: 640px) 180px, 100vw"
-                className="object-contain p-2"
+                sizes="(min-width: 1024px) 720px, 100vw"
+                className="object-cover"
               />
-            ) : (
-              <div className="flex h-full items-center justify-center text-[10px] font-semibold uppercase tracking-[0.24em] text-teal-700">
-                {placeholder}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      {galleryHref ? (
-        <div className="mt-6">
-          <MagneticAnchor href={galleryHref} label="View Full Gallery" target="_blank" rel="noreferrer" />
+            </div>
+          ))}
         </div>
-      ) : null}
+      ) : (
+        <div className="absolute inset-0 bg-linear-to-br from-white via-teal-50/60 to-amber-50/60" />
+      )}
+
+      <div className="absolute inset-0 bg-linear-to-r from-stone-950/82 via-stone-900/44 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-stone-950/80 via-transparent to-stone-950/24" />
+
+      <div className="relative z-10 flex min-h-72 flex-col justify-between p-6 text-white sm:min-h-80 sm:p-7 lg:min-h-96">
+        <div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-200">LEM Chilli</div>
+          <h3 className="mt-4 max-w-sm text-3xl font-bold text-white sm:text-4xl">Product Gallery</h3>
+        </div>
+
+        <div>
+          {galleryHref ? <MagneticAnchor href={galleryHref} label="View Full Gallery" target="_blank" rel="noreferrer" /> : null}
+        </div>
+      </div>
     </motion.article>
   );
 }
 
 export function SupplyExperience({ logoPath, productImagePath, investmentDocumentPath, galleryImages, galleryHref }: SupplyExperienceProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <main className="relative overflow-hidden pb-10">
       <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-teal-200/40 blur-3xl" aria-hidden />
@@ -334,7 +359,7 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
 
           {productImagePath ? (
             <motion.div variants={revealUp} className="mt-8 overflow-hidden rounded-4xl border border-white/75 bg-white/80 p-3 shadow-[0_30px_90px_-50px_rgba(0,0,0,0.28)] backdrop-blur-sm sm:p-4">
-              <div className="overflow-hidden rounded-3xl border border-amber-100/80 bg-linear-to-br from-white via-amber-50/60 to-white">
+              <div className="relative overflow-hidden rounded-3xl border border-amber-100/80 bg-linear-to-br from-white via-amber-50/60 to-white">
                 <Image
                   src={productImagePath}
                   alt="LEM Supply Enterprise product categories board"
@@ -343,6 +368,63 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
                   className="h-auto w-full object-contain"
                   priority
                 />
+                <div className="pointer-events-none absolute inset-x-0 bottom-[8.8%] flex justify-center px-4 sm:bottom-[9.2%]">
+                  <div className="group pointer-events-auto relative w-[34%] min-w-52 max-w-96 sm:w-[32.5%]">
+                    <motion.a
+                      href="mailto:info@lemprojects.co.za"
+                      className="group relative flex min-h-32 flex-col items-center justify-end overflow-hidden border border-white/58 bg-linear-to-b from-white/64 via-[#fff7ea]/58 to-[#f0dfbf]/60 px-5 pb-[13%] pt-[16%] text-center text-teal-900 shadow-[0_14px_26px_-18px_rgba(0,0,0,0.34),0_0_0_1px_rgba(255,248,225,0.18),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-md transition duration-300 hover:border-amber-100/95 hover:shadow-[0_14px_26px_-18px_rgba(0,0,0,0.32),0_0_18px_rgba(255,210,120,0.24),0_0_28px_rgba(0,96,96,0.12),inset_0_1px_0_rgba(255,255,255,0.94)]"
+                      style={{ clipPath: "polygon(17% 0%, 83% 0%, 96% 100%, 4% 100%)" }}
+                      whileHover={prefersReducedMotion ? undefined : { y: -5, scale: 1.025 }}
+                      whileTap={prefersReducedMotion ? undefined : { y: 2, scale: 0.985 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 18, mass: 0.7 }}
+                    >
+                      <motion.div
+                        className="pointer-events-none absolute -left-[28%] top-[-8%] h-[76%] w-[42%] rotate-22 bg-linear-to-r from-white/0 via-white/70 to-white/0 mix-blend-screen"
+                        aria-hidden
+                        animate={
+                          prefersReducedMotion
+                            ? { opacity: 0.24 }
+                            : {
+                                x: ["-18%", "168%"],
+                                opacity: [0, 0.52, 0],
+                              }
+                        }
+                        transition={
+                          prefersReducedMotion
+                            ? undefined
+                            : {
+                                duration: 3.6,
+                                repeat: Infinity,
+                                repeatDelay: 1.1,
+                                ease: "easeInOut",
+                              }
+                        }
+                      />
+                      <div className="pointer-events-none absolute inset-x-[7%] top-[6%] h-[68%] rounded-[42%_42%_18%_18%/26%_26%_12%_12%] border border-white/45 bg-linear-to-b from-white/46 via-white/20 to-transparent opacity-90" aria-hidden />
+                      <div className="pointer-events-none absolute inset-x-[18%] top-[13%] h-px bg-linear-to-r from-transparent via-teal-700/32 to-transparent" aria-hidden />
+                      <motion.div
+                        className="pointer-events-none absolute inset-x-[22%] bottom-[17%] h-px bg-linear-to-r from-transparent via-teal-900/20 to-transparent"
+                        aria-hidden
+                        animate={prefersReducedMotion ? { opacity: 0.4 } : { opacity: [0.18, 0.85, 0.24] }}
+                        transition={prefersReducedMotion ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                      <motion.span
+                        className="relative text-[9px] font-semibold uppercase tracking-[0.34em] text-teal-700/82"
+                        animate={prefersReducedMotion ? undefined : { opacity: [0.92, 1, 0.94] }}
+                        transition={prefersReducedMotion ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        Direct Supply Request
+                      </motion.span>
+                      <motion.span
+                        className="relative mt-2 text-sm font-black uppercase tracking-[0.3em] text-teal-950 sm:text-base"
+                        animate={prefersReducedMotion ? undefined : { textShadow: ["0 0 0 rgba(0,0,0,0)", "0 0 18px rgba(255,244,200,0.42)", "0 0 0 rgba(0,0,0,0)"] }}
+                        transition={prefersReducedMotion ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        Order Here
+                      </motion.span>
+                    </motion.a>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ) : null}
@@ -408,7 +490,7 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
           </motion.div>
 
           <div className="mt-8 grid gap-5 lg:grid-cols-1">
-            <GalleryCard galleryImages={galleryImages} galleryHref={galleryHref} />
+            <GalleryCard galleryImages={galleryImages} productImagePath={productImagePath} galleryHref={galleryHref} />
           </div>
         </motion.section>
 
@@ -441,7 +523,6 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
                 The current website is aligned with the broader LEM visual system and ready to support product files, category expansion, and direct engagement.
               </motion.p>
               <motion.div variants={revealUp} className="mt-8 flex flex-wrap items-center gap-3">
-                <MagneticAnchor href="mailto:info@lemprojects.co.za" label="Start a conversation" variant="secondary" />
                 <ContactChip href="https://wa.me/27764807410" icon={<ContactIcon kind="whatsapp" />} value="0764807410" />
                 <ContactChip href="tel:0823740090" icon={<ContactIcon kind="phone" />} value="0823740090" />
                 <ContactChip icon={<ContactIcon kind="mail" />} value="info@lemprojects.co.za" />
