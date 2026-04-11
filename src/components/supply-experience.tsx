@@ -368,11 +368,11 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
                   className="h-auto w-full object-contain"
                   priority
                 />
-                <div className="pointer-events-none absolute inset-x-0 bottom-[8.8%] flex justify-center px-4 sm:bottom-[9.2%]">
-                  <div className="group pointer-events-auto relative w-[34%] min-w-52 max-w-96 sm:w-[32.5%]">
+                <div className="pointer-events-none absolute inset-x-0 bottom-[8.8%] flex justify-center px-3 sm:bottom-[9.2%] sm:px-4">
+                  <div className="group pointer-events-auto relative w-[30%] min-w-36 max-w-60 sm:w-[32.5%] sm:min-w-44 sm:max-w-96">
                     <motion.a
                       href="mailto:info@lemprojects.co.za"
-                      className="group relative flex min-h-32 flex-col items-center justify-end overflow-hidden border border-white/58 bg-linear-to-b from-white/64 via-[#fff7ea]/58 to-[#f0dfbf]/60 px-5 pb-[13%] pt-[16%] text-center text-teal-900 shadow-[0_14px_26px_-18px_rgba(0,0,0,0.34),0_0_0_1px_rgba(255,248,225,0.18),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-md transition duration-300 hover:border-amber-100/95 hover:shadow-[0_14px_26px_-18px_rgba(0,0,0,0.32),0_0_18px_rgba(255,210,120,0.24),0_0_28px_rgba(0,96,96,0.12),inset_0_1px_0_rgba(255,255,255,0.94)]"
+                      className="group relative flex min-h-20 flex-col items-center justify-end overflow-hidden border border-white/58 bg-linear-to-b from-white/64 via-[#fff7ea]/58 to-[#f0dfbf]/60 px-3 pb-[10%] pt-[12%] text-center text-teal-900 shadow-[0_12px_22px_-16px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,248,225,0.18),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-md transition duration-300 hover:border-amber-100/95 hover:shadow-[0_14px_26px_-18px_rgba(0,0,0,0.32),0_0_18px_rgba(255,210,120,0.24),0_0_28px_rgba(0,96,96,0.12),inset_0_1px_0_rgba(255,255,255,0.94)] sm:min-h-32 sm:px-5 sm:pb-[13%] sm:pt-[16%]"
                       style={{ clipPath: "polygon(17% 0%, 83% 0%, 96% 100%, 4% 100%)" }}
                       whileHover={prefersReducedMotion ? undefined : { y: -5, scale: 1.025 }}
                       whileTap={prefersReducedMotion ? undefined : { y: 2, scale: 0.985 }}
@@ -409,14 +409,14 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
                         transition={prefersReducedMotion ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
                       />
                       <motion.span
-                        className="relative text-[9px] font-semibold uppercase tracking-[0.34em] text-teal-700/82"
+                        className="relative text-[7px] font-semibold uppercase tracking-[0.24em] text-teal-700/82 sm:text-[9px] sm:tracking-[0.34em]"
                         animate={prefersReducedMotion ? undefined : { opacity: [0.92, 1, 0.94] }}
                         transition={prefersReducedMotion ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                       >
                         Direct Supply Request
                       </motion.span>
                       <motion.span
-                        className="relative mt-2 text-sm font-black uppercase tracking-[0.3em] text-teal-950 sm:text-base"
+                        className="relative mt-1 text-[11px] font-black uppercase tracking-[0.18em] text-teal-950 sm:mt-2 sm:text-base sm:tracking-[0.3em]"
                         animate={prefersReducedMotion ? undefined : { textShadow: ["0 0 0 rgba(0,0,0,0)", "0 0 18px rgba(255,244,200,0.42)", "0 0 0 rgba(0,0,0,0)"] }}
                         transition={prefersReducedMotion ? undefined : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                       >
