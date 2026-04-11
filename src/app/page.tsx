@@ -10,7 +10,7 @@ function resolvePublicAsset(relativePath: string) {
 export default function HomePage() {
   const logoPath = resolvePublicAsset(path.join("logos", "LEM-Supply-Enterprise_Logo.png"));
   const productImagePath = resolvePublicAsset(path.join("images", "Products_Image.png"));
-  const investmentDocumentPath = resolvePublicAsset(path.join("documents", "Investment Statement_LEM Chilli.docx"));
+  const investmentDocumentPath = resolvePublicAsset(path.join("documents", "Investment Statement_ChillyLEM.docx"));
   const imagesDirectory = path.join(process.cwd(), "public", "images");
   const galleryImages = existsSync(imagesDirectory)
     ? readdirSync(imagesDirectory)
@@ -18,7 +18,7 @@ export default function HomePage() {
         .sort((left, right) => left.localeCompare(right))
         .map((fileName) => `/images/${fileName}`)
     : [];
-  const galleryHref = galleryImages[0] ?? productImagePath;
+  const galleryHref = galleryImages.length ? "/gallery" : productImagePath;
 
   return (
     <SupplyExperience

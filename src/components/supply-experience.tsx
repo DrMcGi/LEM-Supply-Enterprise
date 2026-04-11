@@ -213,6 +213,7 @@ function ContactChip({ href, icon, value }: { href?: string; icon: ReactNode; va
 function GalleryCard({ galleryImages, productImagePath, galleryHref }: { galleryImages: string[]; productImagePath: string | null; galleryHref: string | null }) {
   const slideImages = galleryImages.length ? galleryImages : productImagePath ? [productImagePath] : [];
   const [activeSlide, setActiveSlide] = useState(0);
+  const opensInternalGallery = galleryHref?.startsWith("/") ?? false;
 
   useEffect(() => {
     if (slideImages.length <= 1) {
@@ -238,7 +239,7 @@ function GalleryCard({ galleryImages, productImagePath, galleryHref }: { gallery
             <div key={imagePath} className={`absolute inset-0 transition-opacity duration-700 ${index === activeSlide ? "opacity-100" : "opacity-0"}`}>
               <Image
                 src={imagePath}
-                alt={`LEM Chilli gallery highlight ${index + 1}`}
+                alt={`ChillyLEM gallery highlight ${index + 1}`}
                 fill
                 sizes="(min-width: 1024px) 720px, 100vw"
                 className="object-cover"
@@ -255,12 +256,12 @@ function GalleryCard({ galleryImages, productImagePath, galleryHref }: { gallery
 
       <div className="relative z-10 flex min-h-72 flex-col justify-between p-6 text-white sm:min-h-80 sm:p-7 lg:min-h-96">
         <div>
-          <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-200">LEM Chilli</div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-teal-200">ChillyLEM</div>
           <h3 className="mt-4 max-w-sm text-3xl font-bold text-white sm:text-4xl">Product Gallery</h3>
         </div>
 
         <div>
-          {galleryHref ? <MagneticAnchor href={galleryHref} label="View Full Gallery" target="_blank" rel="noreferrer" /> : null}
+          {galleryHref ? <MagneticAnchor href={galleryHref} label="View Full Gallery" target={opensInternalGallery ? undefined : "_blank"} rel={opensInternalGallery ? undefined : "noreferrer"} /> : null}
         </div>
       </div>
     </motion.article>
@@ -485,7 +486,7 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
           <motion.div variants={revealUp} className="text-center">
             <p className="text-xs uppercase tracking-[0.22em] text-teal-700">Community Empowerment</p>
             <p className="mx-auto mt-4 max-w-5xl text-lg leading-relaxed text-stone-700">
-              Investment Statement: LEM Chilli Product LEM Supply Enterprise’s investment in the LEM Chilli product is rooted in our strong commitment to building sustainable supply chains and supporting local SMMEs. As a business, we recognize that true economic growth is driven by empowering local producers and creating opportunities within our communities. When a local black-owned farmer approached us with high-quality chilli produce, we saw an opportunity not only to support his agricultural efforts but also to create a value-added product that strengthens our supply chain. By integrating locally sourced raw materials into a market-ready product, we ensure both sustainability and shared economic benefit. This initiative reflects our broader vision of promoting inclusive growth, fostering entrepreneurship, and contributing meaningfully to the development of black-owned enterprises. Through the LEM Chilli product, we are not just supplying goods—we are investing in people, partnerships, and long-term impact.
+              Investment Statement: ChillyLEM Product LEM Supply Enterprise’s investment in the ChillyLEM product is rooted in our strong commitment to building sustainable supply chains and supporting local SMMEs. As a business, we recognize that true economic growth is driven by empowering local producers and creating opportunities within our communities. When a local black-owned farmer approached us with high-quality chilli produce, we saw an opportunity not only to support his agricultural efforts but also to create a value-added product that strengthens our supply chain. By integrating locally sourced raw materials into a market-ready product, we ensure both sustainability and shared economic benefit. This initiative reflects our broader vision of promoting inclusive growth, fostering entrepreneurship, and contributing meaningfully to the development of black-owned enterprises. Through the ChillyLEM product, we are not just supplying goods-we are investing in people, partnerships, and long-term impact.
             </p>
           </motion.div>
 
