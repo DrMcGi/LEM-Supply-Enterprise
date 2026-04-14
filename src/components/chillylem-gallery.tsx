@@ -73,7 +73,7 @@ export function ChillylemGallery({ items }: ChillylemGalleryProps) {
                 ) : (
                   <Image
                     src={activeItem.src}
-                    alt={`ChillyLEM gallery image ${activeIndex + 1}`}
+                    alt={activeItem.label}
                     fill
                     priority
                     sizes="(min-width: 1024px) 760px, 100vw"
@@ -90,9 +90,8 @@ export function ChillylemGallery({ items }: ChillylemGalleryProps) {
                 </p>
                 <h2 className="mt-3 text-3xl font-bold text-stone-900">ChillyLEM product showcase</h2>
                 <p className="mt-4 text-base leading-8 text-stone-700">
-                  Use the navigation controls or thumbnails to move through the full ChillyLEM image set.
+                  Use the navigation controls or thumbnails to move through the full ChillyLEM gallery set.
                 </p>
-                <p className="mt-4 text-sm font-semibold text-stone-700">{activeItem.label}</p>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
@@ -101,14 +100,14 @@ export function ChillylemGallery({ items }: ChillylemGalleryProps) {
                   onClick={() => setActiveIndex((current) => (current - 1 + items.length) % items.length)}
                   className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-white px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-stone-700 transition hover:border-teal-300 hover:bg-teal-50 hover:text-teal-800"
                 >
-                  Previous Image
+                  Previous
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveIndex((current) => (current + 1) % items.length)}
                   className="inline-flex items-center justify-center rounded-full border border-teal-200 bg-teal-700 px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-teal-600"
                 >
-                  Next Image
+                  Next
                 </button>
               </div>
             </div>
@@ -154,7 +153,6 @@ export function ChillylemGallery({ items }: ChillylemGalleryProps) {
                   <p className="mt-2 text-lg font-bold text-stone-900">
                     {item.type === "video" ? "Gallery Video" : "Gallery Image"} {index + 1}
                   </p>
-                  <p className="mt-1 text-sm font-semibold text-stone-700">{item.label}</p>
                 </div>
               </button>
             );
