@@ -310,7 +310,7 @@ export function SupplyExperience({ logoPath, productImagePath, investmentDocumen
                     <h2 className="mt-3 text-3xl font-bold text-stone-900">LEM Supply Enterprise</h2>
                   </div>
                   <a
-                    href="https://lem-projects.vercel.app"
+                    href="https://www.lemprojects.co.za"
                     className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/85 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-teal-800 transition hover:bg-teal-50 sm:text-xs sm:tracking-[0.22em]"
                   >
                     <span className="signal-dot" />
